@@ -1,0 +1,63 @@
+$color: #e55454;
+
+.cross__svg {
+  display: inline-block;
+  stroke-width: 3;
+}
+
+.cross__circle {
+  animation: 2s ease 0s normal forwards 1 running stroke;
+  fill: none;
+  stroke: $color;
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-width: 3;
+}
+
+.cross__path {
+  stroke: $color;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  transform-origin: 50% 50% 0;
+  &--right {
+    animation: 1s ease 0s normal forwards 1 running stroke;
+  }
+  &--left {
+    animation: 1.5s ease 0s normal forwards 1 running stroke;
+  }
+}
+
+@keyframes stroke {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.board {
+    outline: 2px solid whitesmoke;
+}
+
+.row {
+    height: 200px;
+}
+
+.cell {
+    cursor: pointer;
+    width: 200px;
+    height: 200px;
+    outline: 1px solid whitesmoke;
+    display: inline-block;
+}
+
+.button {
+    cursor: pointer;
+    margin-top: 30px;
+    height: 40px;
+    width: 100px;
+    font-family: 'Courier New', Courier, monospace;
+    border-radius: 10%;
+}
+
+.disable-board {
+  pointer-events: none;
+}

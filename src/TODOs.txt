@@ -1,0 +1,7 @@
+TODOs:
+
+[x] - Create Cell (prop either x or round)
+[x] - Create board 
+[ ] - Handle marking X/0
+[ ] - Handle checking a win 
+[ ] - Handle display the results 
