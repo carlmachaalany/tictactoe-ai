@@ -64,7 +64,7 @@ const Game = () => {
         setWinner(null);
         if (AIstarts) {
             let root = generateMinimaxTree();
-            getBestNextMove(root);
+            setTimeout(() => getBestNextMove(root), 100)
         } else {
             setNode(generateMinimaxTree())
         }
