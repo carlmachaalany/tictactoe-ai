@@ -1,5 +1,21 @@
 $color: #e55454;
 
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100px;
+}
+.header-text {
+  margin: 0;
+}
+
+.footer {
+  width: 50%;
+  display: flex;
+  justify-content: space-between;
+}
+
 .cross__svg {
   display: inline-block;
   stroke-width: 3;

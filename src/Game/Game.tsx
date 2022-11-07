@@ -1,69 +1,84 @@
 import { CellStatus as C } from '../types';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 import './Game.scss';
+import { getWinnerElseEmpty, generateMinimaxTree, MinimaxNode } from "../minimax"
 
 const Game = () => {
 
-    const [board, setBoard] = useState<C[][]>(
-        [
-            [C.Empty, C.Empty, C.Empty],
-            [C.Empty, C.Empty, C.Empty],
-            [C.Empty, C.Empty, C.Empty]
-        ]
-    )
-    const [winner, setWinner] = useState<string | null>(null)
-    const [xturn, setXturn] = useState(true);
+    const [node, setNode] = useState<MinimaxNode>(generateMinimaxTree())
+    const [winner, setWinner] = useState<C | null>(null)
 
     useEffect(() => {
         checkIfWin();
-    }, [xturn])
+    }, [node])
 
     const makeMove = (idxs: number[]) => {
-        if (board[idxs[0]][idxs[1]] === C.Empty) {
-            let newBoard: C[][] = [...board];
-            if (xturn) {
+        if (node.board[idxs[0]][idxs[1]] === C.Empty) {
+            let newBoard: C[][] = node.board.map((row: C[]) => [...row]);
+            if (node.playerTurn === C.Cross) {
                 newBoard[idxs[0]][idxs[1]] = C.Cross;
             } else {
                 newBoard[idxs[0]][idxs[1]] = C.Round;
             }
-            setXturn(!xturn);
-            setBoard(newBoard);
+            for (let i = 0; i < node.successors.length; i++) {
+                if (JSON.stringify(node.successors[i].board) == JSON.stringify(newBoard)) {
+                    if (node.successors[i].board.every((config: C[]) => config.every((cell: C) => [C.Round, C.Cross].includes(cell)))) {
+                        setNode(node.successors[i]);
+                    } else {
+                        getBestNextMove(node.successors[i]);
+                    }
+                }
+            }
         }
     }
 
     const checkIfWin = () => {
-        const isValid = (arr: C[]) => arr[0] === arr[1] && arr[1] === arr[2] && arr[0] !== C.Empty;
-        const allConfigs = [
-            board[0], board[1], board[2],
-            [board[0][0], board[1][0], board[2][0]],
-            [board[0][1], board[1][1], board[2][1]],
-            [board[0][2], board[1][2], board[2][2]],
-            [board[0][0], board[1][1], board[2][2]],
-            [board[0][2], board[1][1], board[2][0]]
-        ]
-        if (allConfigs.some(isValid)) {
-            if (xturn) setWinner("O")
-            else setWinner("X")
+        let winner = getWinnerElseEmpty(node.board)
+        if (winner !== null) {
+            setWinner(winner);
         }
     }
 
-    const resetGame = () => {
-        setBoard(
-            [
-                [C.Empty, C.Empty, C.Empty],
-                [C.Empty, C.Empty, C.Empty],
-                [C.Empty, C.Empty, C.Empty]
-            ]
-        )
+    const getBestNextMove = (node: MinimaxNode) => {
+        if (winner !== null) return;
+        if (node.playerTurn === C.Cross) {
+            let maxNode = node.successors[0];
+            for (let i = 1; i < node.successors.length; i++) {
+                if (node.successors[i].value > maxNode.value) {
+                    maxNode = node.successors[i];
+                }
+            }
+            setNode(maxNode);
+        } else {
+            let minNode = node.successors[0];
+            for (let i = 1; i < node.successors.length; i++) {
+                if (node.successors[i].value < minNode.value) {
+                    minNode = node.successors[i];
+                }
+            }
+            setNode(minNode);
+        }
+    }
+
+    const resetGame = (AIstarts: boolean) => {
         setWinner(null);
-        setXturn(true);
+        if (AIstarts) {
+            let root = generateMinimaxTree();
+            getBestNextMove(root);
+        } else {
+            setNode(generateMinimaxTree())
+        }
     }
 
     return (
         <>
-            {winner ? <h1>Winner is {winner} !</h1> : <h1 style={{ visibility: "hidden" }}>W</h1>}
+            <div className='header'>
+                {winner !== null && winner !== C.Empty ?
+                    <h1 className='header-text'>Winner is {winner === C.Cross ? "X" : "O"}!</h1> :
+                    winner !== null ? <h1 className='header-text'>Tie!</h1> : <p className='header-text'>You won't beat me, but you can try.</p>}
+            </div>
             <div className={`board ${winner ? "disable-board" : ""}`}>
-                {board.map((row: C[], rowIdx: number) => (
+                {node.board.map((row: C[], rowIdx: number) => (
                     <div key={rowIdx} className="row">
                         {row.map((cell: C, colIdx: number) => (
                             <svg key={colIdx} onClick={() => makeMove([rowIdx, colIdx])} className="cell cross__svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
@@ -83,7 +98,11 @@ const Game = () => {
                     </div>
                 ))}
             </div>
-            <button className="button" onClick={resetGame}>Reset Game</button>
+            <div className='footer'>
+                <button className="button" onClick={() => resetGame(true)}>AI starts over</button>
+                <button className="button" onClick={() => resetGame(false)}>I start over</button>
+                <button className="button" onClick={() => getBestNextMove(node)}>Generate next best</button>
+            </div>
         </>
     )
 }
