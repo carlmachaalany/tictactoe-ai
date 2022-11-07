@@ -63,10 +63,8 @@ var getWinnerElseEmpty = function (board) {
 };
 exports.getWinnerElseEmpty = getWinnerElseEmpty;
 var getMinimaxValue = function (node) {
-    // console.log("called with:", MinimaxNode.board);
     var winner = (0, exports.getWinnerElseEmpty)(node.board);
     if (winner !== null) {
-        // console.log(winner);
         if (winner == types_1.CellStatus.Cross)
             node.value = 1;
         else if (winner == types_1.CellStatus.Round)
@@ -110,17 +108,3 @@ var generateMinimaxTree = function () {
     return root;
 };
 exports.generateMinimaxTree = generateMinimaxTree;
-// console.log(generateMinimaxTree());
-// root.board = [
-//     [C.Cross, C.Round, C.Cross],
-//     [C.Cross, C.Round, C.Round],
-//     [C.Empty, C.Empty, C.Empty]
-// ];
-// console.log(getMinimaxValue(root));
-// root.successors.forEach((s: any) => {
-//     if (s.value === 10032) {
-//         s.successors.forEach((a: any) => {
-//             console.log(a)
-//         })
-//     }
-// })
