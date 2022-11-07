@@ -6,15 +6,12 @@ $color: #e55454;
   align-items: center;
   min-height: 100px;
 }
-.header-text {
-  margin: 0;
-}
 
-.footer {
-  width: 50%;
-  display: flex;
-  justify-content: space-between;
-}
+// .footer {
+//   width: 50%;
+//   display: flex;
+//   justify-content: space-between;
+// }
 
 .cross__svg {
   display: inline-block;
@@ -54,25 +51,25 @@ $color: #e55454;
 }
 
 .row {
-    height: 200px;
+    height: 150px;
 }
 
 .cell {
     cursor: pointer;
-    width: 200px;
-    height: 200px;
+    width: 150px;
+    height: 150px;
     outline: 1px solid whitesmoke;
     display: inline-block;
 }
 
-.button {
-    cursor: pointer;
-    margin-top: 30px;
-    height: 40px;
-    width: 100px;
-    font-family: 'Courier New', Courier, monospace;
-    border-radius: 10%;
-}
+// .button {
+//     cursor: pointer;
+//     margin-top: 30px;
+//     height: 40px;
+//     width: 100px;
+//     font-family: 'Courier New', Courier, monospace;
+//     border-radius: 10%;
+// }
 
 .disable-board {
   pointer-events: none;

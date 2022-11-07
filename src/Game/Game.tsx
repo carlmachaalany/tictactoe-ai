@@ -2,6 +2,8 @@ import { CellStatus as C } from '../types';
 import { useEffect, useState, useTransition } from 'react';
 import './Game.scss';
 import { getWinnerElseEmpty, generateMinimaxTree, MinimaxNode } from "../minimax"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLaptop, faUser, faBrain } from '@fortawesome/free-solid-svg-icons';
 
 const Game = () => {
 
@@ -74,10 +76,10 @@ const Game = () => {
         <>
             <div className='header'>
                 {winner !== null && winner !== C.Empty ?
-                    <h1 className='header-text'>Winner is {winner === C.Cross ? "X" : "O"}!</h1> :
-                    winner !== null ? <h1 className='header-text'>Tie!</h1> : <p className='header-text'>You won't beat me, but you can try.</p>}
+                    <h1>Winner is {winner === C.Cross ? "X" : "O"}!</h1> :
+                    winner !== null ? <h1>Tie!</h1> : <p className='text-base'>You won't beat me, <br /> but you can try.</p>}
             </div>
-            <div className={`board ${winner ? "disable-board" : ""}`}>
+            <div className={`board ${winner ? "pointer-events-none" : ""}`}>
                 {node.board.map((row: C[], rowIdx: number) => (
                     <div key={rowIdx} className="row">
                         {row.map((cell: C, colIdx: number) => (
@@ -98,10 +100,13 @@ const Game = () => {
                     </div>
                 ))}
             </div>
-            <div className='footer'>
-                <button className="button" onClick={() => resetGame(true)}>AI starts over</button>
-                <button className="button" onClick={() => resetGame(false)}>I start over</button>
-                <button className="button" onClick={() => getBestNextMove(node)}>Generate next best</button>
+            <div className='flex justify-between mt-5'>
+                <button className="text-lg border border-slate-500 p-2 rounded-xl transition ease-in-out hover:scale-105 hover:bg-slate-500"
+                    onClick={() => resetGame(true)}><FontAwesomeIcon icon={faLaptop}></FontAwesomeIcon><br/><p className='text-sm font-bold'>AI starts over</p></button>
+                <button className="text-lg mx-5 border border-slate-500 p-2 rounded-xl transition ease-in-out hover:scale-105 hover:bg-slate-500"
+                    onClick={() => resetGame(false)}><FontAwesomeIcon icon={faUser}></FontAwesomeIcon><br/><p className='text-sm font-bold'>I start over</p></button>
+                <button className="text-lg border border-slate-500 p-2 rounded-xl transition ease-in-out hover:scale-105 hover:bg-slate-500"
+                    onClick={() => getBestNextMove(node)}><FontAwesomeIcon icon={faBrain}></FontAwesomeIcon><br/><p className='text-sm font-bold'>Play optimal move</p></button>
             </div>
         </>
     )
