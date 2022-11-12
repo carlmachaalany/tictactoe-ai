@@ -4,3 +4,9 @@ export enum CellStatus {
     Cross,
     Round
 }
+
+export enum GameName {
+    NoGameSelected,
+    TicTacToe,
+    SnakeGame
+}

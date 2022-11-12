@@ -1,0 +1,32 @@
+.board {
+    outline: 2px solid rgb(134, 154, 189);
+}
+
+.row {
+    height: 50px;
+}
+
+.cell {
+    width: 50px;
+    height: 50px;
+    outline: 1px solid rgb(134, 154, 189);
+    display: inline-block;
+}
+
+.food-cell {
+    background-color: red;
+}
+
+.snake-cell {
+    background-color: green;
+}
+
+.button {
+    height: 100px;
+    width: 200px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 500;
+    color: black;
+    font-size: 20px;
+}
